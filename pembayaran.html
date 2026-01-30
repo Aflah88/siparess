@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Pembayaran Retribusi Sampah - SIPARES">
+  <title>Pembayaran - SIPARES</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon"><i class="fas fa-recycle"></i></div>
+        <span class="logo-text">SIPARES</span>
+      </a>
+      <div class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link"><i class="fas fa-home"></i><span>Beranda</span></a>
+        <a href="pembayaran.html" class="nav-link active"><i class="fas fa-credit-card"></i><span>Pembayaran</span></a>
+        <a href="riwayat.html" class="nav-link"><i class="fas fa-history"></i><span>Riwayat</span></a>
+        <a href="edukasi.html" class="nav-link"><i class="fas fa-book-open"></i><span>Edukasi</span></a>
+        <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-notification" id="btn-notification"><i class="fas fa-bell"></i><span
+            class="notification-badge">3</span></button>
+        <a href="login.html" class="btn btn-primary btn-login"><i class="fas fa-user"></i><span>Masuk</span></a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="page-header-bg">
+      <div class="header-shape shape-1"></div>
+      <div class="header-shape shape-2"></div>
+    </div>
+    <div class="container">
+      <div class="page-header-content">
+        <div class="breadcrumb">
+          <a href="index.html">Beranda</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>Pembayaran</span>
+        </div>
+        <h1 class="page-title">Pembayaran Retribusi</h1>
+        <p class="page-subtitle">Bayar retribusi sampah Anda dengan mudah menggunakan berbagai metode pembayaran</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Payment Section -->
+  <section class="payment-section">
+    <div class="container">
+      <div class="payment-grid">
+        <!-- Left: Bill Info -->
+        <div class="payment-info">
+          <div class="bill-card">
+            <div class="bill-header">
+              <h3><i class="fas fa-file-invoice-dollar"></i> Tagihan Anda</h3>
+              <span class="bill-status pending"><i class="fas fa-clock"></i> Belum Dibayar</span>
+            </div>
+            <div class="bill-details">
+              <div class="bill-row">
+                <span class="label">No. Pelanggan</span>
+                <span class="value">SPR-2026-001234</span>
+              </div>
+              <div class="bill-row">
+                <span class="label">Nama</span>
+                <span class="value">Ahmad Susanto</span>
+              </div>
+              <div class="bill-row">
+                <span class="label">Alamat</span>
+                <span class="value">Jl. Merdeka No. 45, RT 03/RW 05</span>
+              </div>
+              <div class="bill-row">
+                <span class="label">Kategori</span>
+                <span class="value"><span class="badge-category">Rumah Tangga</span></span>
+              </div>
+              <div class="bill-row">
+                <span class="label">Periode</span>
+                <span class="value">Januari 2026</span>
+              </div>
+              <div class="bill-row">
+                <span class="label">Jatuh Tempo</span>
+                <span class="value highlight">20 Januari 2026</span>
+              </div>
+            </div>
+            <div class="bill-total">
+              <span class="total-label">Total Tagihan</span>
+              <span class="total-amount">Rp 50.000</span>
+            </div>
+            <div class="bill-breakdown">
+              <div class="breakdown-item">
+                <span>Retribusi Sampah</span>
+                <span>Rp 45.000</span>
+              </div>
+              <div class="breakdown-item">
+                <span>Biaya Admin</span>
+                <span>Rp 5.000</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Previous Months -->
+          <div class="previous-bills">
+            <h4>Tagihan Sebelumnya</h4>
+            <div class="prev-bill-item paid">
+              <div class="prev-bill-info">
+                <span class="period">Desember 2025</span>
+                <span class="amount">Rp 50.000</span>
+              </div>
+              <span class="prev-status"><i class="fas fa-check-circle"></i> Lunas</span>
+            </div>
+            <div class="prev-bill-item paid">
+              <div class="prev-bill-info">
+                <span class="period">November 2025</span>
+                <span class="amount">Rp 50.000</span>
+              </div>
+              <span class="prev-status"><i class="fas fa-check-circle"></i> Lunas</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Payment Methods -->
+        <div class="payment-methods">
+          <div class="payment-card">
+            <h3><i class="fas fa-wallet"></i> Pilih Metode Pembayaran</h3>
+
+            <!-- QRIS -->
+            <div class="payment-method active">
+              <div class="method-header">
+                <input type="radio" name="payment" id="qris" checked>
+                <label for="qris">
+                  <div class="method-icon qris"><i class="fas fa-qrcode"></i></div>
+                  <div class="method-info">
+                    <h4>QRIS</h4>
+                    <p>Scan dengan e-wallet atau mobile banking</p>
+                  </div>
+                </label>
+              </div>
+              <div class="method-content">
+                <div class="qris-container">
+                  <div class="qris-code">
+                    <div class="qr-placeholder">
+                      <i class="fas fa-qrcode"></i>
+                      <p>QR Code akan muncul setelah konfirmasi</p>
+                    </div>
+                  </div>
+                  <div class="qris-info">
+                    <p>Scan kode QR dengan aplikasi:</p>
+                    <div class="ewallet-logos">
+                      <span class="ewallet-item">GoPay</span>
+                      <span class="ewallet-item">OVO</span>
+                      <span class="ewallet-item">DANA</span>
+                      <span class="ewallet-item">ShopeePay</span>
+                      <span class="ewallet-item">LinkAja</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Transfer Bank -->
+            <div class="payment-method">
+              <div class="method-header">
+                <input type="radio" name="payment" id="transfer">
+                <label for="transfer">
+                  <div class="method-icon bank"><i class="fas fa-university"></i></div>
+                  <div class="method-info">
+                    <h4>Transfer Bank</h4>
+                    <p>Virtual Account dari berbagai bank</p>
+                  </div>
+                </label>
+              </div>
+              <div class="method-content">
+                <div class="bank-options">
+                  <div class="bank-option"><span class="bank-name">BCA</span><span class="va-number">8277 0812 3456
+                      7890</span></div>
+                  <div class="bank-option"><span class="bank-name">BNI</span><span class="va-number">8811 0812 3456
+                      7890</span></div>
+                  <div class="bank-option"><span class="bank-name">Mandiri</span><span class="va-number">8899 0812 3456
+                      7890</span></div>
+                  <div class="bank-option"><span class="bank-name">BRI</span><span class="va-number">8822 0812 3456
+                      7890</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Minimarket -->
+            <div class="payment-method">
+              <div class="method-header">
+                <input type="radio" name="payment" id="retail">
+                <label for="retail">
+                  <div class="method-icon retail"><i class="fas fa-store"></i></div>
+                  <div class="method-info">
+                    <h4>Minimarket</h4>
+                    <p>Bayar di Alfamart, Indomaret, dll</p>
+                  </div>
+                </label>
+              </div>
+              <div class="method-content">
+                <div class="retail-code">
+                  <p>Kode Pembayaran:</p>
+                  <div class="code-box">
+                    <span class="code">SPR2026001234</span>
+                    <button class="btn-copy"><i class="fas fa-copy"></i></button>
+                  </div>
+                  <p class="note">Tunjukkan kode ini ke kasir</p>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary btn-lg btn-pay">
+              <i class="fas fa-lock"></i>
+              <span>Bayar Sekarang - Rp 50.000</span>
+            </button>
+
+            <div class="payment-security">
+              <i class="fas fa-shield-alt"></i>
+              <span>Pembayaran dijamin aman dan terenkripsi</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-simple">
+    <div class="container">
+      <p>&copy; 2026 SIPARES. Hak Cipta Dilindungi.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // Payment method toggle
+    document.querySelectorAll('.payment-method').forEach(method => {
+      const radio = method.querySelector('input[type="radio"]');
+      radio.addEventListener('change', () => {
+        document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+        if (radio.checked) method.classList.add('active');
+      });
+    });
+  </script>
+</body>
+
+</html>

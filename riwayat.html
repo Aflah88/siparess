@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Riwayat Transaksi - SIPARES">
+  <title>Riwayat Transaksi - SIPARES</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/pages.css">
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar scrolled" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-logo">
+        <div class="logo-icon"><i class="fas fa-recycle"></i></div>
+        <span class="logo-text">SIPARES</span>
+      </a>
+      <div class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link"><i class="fas fa-home"></i><span>Beranda</span></a>
+        <a href="pembayaran.html" class="nav-link"><i class="fas fa-credit-card"></i><span>Pembayaran</span></a>
+        <a href="riwayat.html" class="nav-link active"><i class="fas fa-history"></i><span>Riwayat</span></a>
+        <a href="edukasi.html" class="nav-link"><i class="fas fa-book-open"></i><span>Edukasi</span></a>
+        <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn-notification" id="btn-notification"><i class="fas fa-bell"></i><span
+            class="notification-badge">3</span></button>
+        <a href="login.html" class="btn btn-primary btn-login"><i class="fas fa-user"></i><span>Masuk</span></a>
+      </div>
+      <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <section class="page-header">
+    <div class="page-header-bg">
+      <div class="header-shape shape-1"></div>
+      <div class="header-shape shape-2"></div>
+    </div>
+    <div class="container">
+      <div class="page-header-content">
+        <div class="breadcrumb">
+          <a href="index.html">Beranda</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>Riwayat Transaksi</span>
+        </div>
+        <h1 class="page-title">Riwayat Transaksi</h1>
+        <p class="page-subtitle">Lacak dan kelola semua riwayat pembayaran retribusi sampah Anda</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- History Section -->
+  <section class="history-section">
+    <div class="container">
+      <!-- Filters -->
+      <div class="history-filters">
+        <div class="filter-group">
+          <label>Tahun:</label>
+          <select>
+            <option>2026</option>
+            <option>2025</option>
+            <option>2024</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Status:</label>
+          <select>
+            <option>Semua</option>
+            <option>Lunas</option>
+            <option>Pending</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Metode:</label>
+          <select>
+            <option>Semua</option>
+            <option>QRIS</option>
+            <option>Transfer Bank</option>
+            <option>Minimarket</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Transaction Table -->
+      <div class="history-table">
+        <table>
+          <thead>
+            <tr>
+              <th>No. Transaksi</th>
+              <th>Periode</th>
+              <th>Tanggal Bayar</th>
+              <th>Metode</th>
+              <th>Nominal</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>TRX-2025120023</strong></td>
+              <td>Desember 2025</td>
+              <td>15 Des 2025, 14:32</td>
+              <td><i class="fas fa-qrcode"></i> QRIS</td>
+              <td><strong>Rp 50.000</strong></td>
+              <td><span class="status-badge success"><i class="fas fa-check-circle"></i> Lunas</span></td>
+              <td><a href="#" class="btn-download"><i class="fas fa-download"></i> Unduh</a></td>
+            </tr>
+            <tr>
+              <td><strong>TRX-2025110019</strong></td>
+              <td>November 2025</td>
+              <td>12 Nov 2025, 09:15</td>
+              <td><i class="fas fa-university"></i> BCA VA</td>
+              <td><strong>Rp 50.000</strong></td>
+              <td><span class="status-badge success"><i class="fas fa-check-circle"></i> Lunas</span></td>
+              <td><a href="#" class="btn-download"><i class="fas fa-download"></i> Unduh</a></td>
+            </tr>
+            <tr>
+              <td><strong>TRX-2025100015</strong></td>
+              <td>Oktober 2025</td>
+              <td>18 Okt 2025, 16:45</td>
+              <td><i class="fas fa-qrcode"></i> QRIS</td>
+              <td><strong>Rp 50.000</strong></td>
+              <td><span class="status-badge success"><i class="fas fa-check-circle"></i> Lunas</span></td>
+              <td><a href="#" class="btn-download"><i class="fas fa-download"></i> Unduh</a></td>
+            </tr>
+            <tr>
+              <td><strong>TRX-2025090012</strong></td>
+              <td>September 2025</td>
+              <td>10 Sep 2025, 11:20</td>
+              <td><i class="fas fa-store"></i> Indomaret</td>
+              <td><strong>Rp 50.000</strong></td>
+              <td><span class="status-badge success"><i class="fas fa-check-circle"></i> Lunas</span></td>
+              <td><a href="#" class="btn-download"><i class="fas fa-download"></i> Unduh</a></td>
+            </tr>
+            <tr>
+              <td><strong>TRX-2025080008</strong></td>
+              <td>Agustus 2025</td>
+              <td>14 Agu 2025, 13:55</td>
+              <td><i class="fas fa-qrcode"></i> QRIS</td>
+              <td><strong>Rp 50.000</strong></td>
+              <td><span class="status-badge success"><i class="fas fa-check-circle"></i> Lunas</span></td>
+              <td><a href="#" class="btn-download"><i class="fas fa-download"></i> Unduh</a></td>
+            </tr>
+            <tr>
+              <td><strong>TRX-2025070005</strong></td>
+              <td>Juli 2025</td>
+              <td>08 Jul 2025, 10:10</td>
+              <td><i class="fas fa-university"></i> Mandiri VA</td>
+              <td><strong>Rp 50.000</strong></td>
+              <td><span class="status-badge success"><i class="fas fa-check-circle"></i> Lunas</span></td>
+              <td><a href="#" class="btn-download"><i class="fas fa-download"></i> Unduh</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Summary -->
+      <div class="history-summary"
+        style="margin-top: 2rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;">
+        <div class="stat-card">
+          <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-value">Rp 300.000</div>
+          <div class="stat-label">Total Pembayaran 2025</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue"><i class="fas fa-calendar-check"></i></div>
+          <div class="stat-value">6 Bulan</div>
+          <div class="stat-label">Pembayaran Tepat Waktu</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon orange"><i class="fas fa-star"></i></div>
+          <div class="stat-value">100%</div>
+          <div class="stat-label">Tingkat Kepatuhan</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer-simple">
+    <div class="container">
+      <p>&copy; 2026 SIPARES. Hak Cipta Dilindungi.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+
+</html>

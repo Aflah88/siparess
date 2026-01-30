@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIPARES - Sistem Pembayaran Retribusi Sampah</title>
+  <meta name="description" content="Bayar retribusi sampah dengan mudah, cepat, dan aman melalui SIPARES">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container">
+      <a href="#" class="navbar-brand">
+        <i class="fas fa-recycle"></i>
+        SIPARES
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home" class="active">Beranda</a></li>
+        <li><a href="#layanan">Layanan</a></li>
+        <li><a href="#tarif">Tarif</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="edukasi.html">Edukasi</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="login.php" class="btn btn-outline btn-sm">Masuk</a>
+        <a href="register.php" class="btn btn-primary btn-sm">Daftar</a>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Bayar Retribusi Sampah <span class="highlight">Lebih Mudah</span></h1>
+        <p>Sistem pembayaran online yang aman dan praktis. Bayar kapan saja, di mana saja dengan berbagai metode
+          pembayaran.</p>
+
+        <div class="hero-buttons">
+          <a href="register.php" class="btn btn-primary btn-lg">
+            <i class="fas fa-user-plus"></i> Daftar Sekarang
+          </a>
+          <a href="#layanan" class="btn btn-secondary btn-lg">
+            <i class="fas fa-info-circle"></i> Pelajari Lebih
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="number">5000+</div>
+            <div class="label">Pelanggan Aktif</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number">98%</div>
+            <div class="label">Tingkat Kepuasan</div>
+          </div>
+          <div class="hero-stat">
+            <div class="number">24/7</div>
+            <div class="label">Layanan Online</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-image">
+          <i class="fas fa-recycle"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="section services" id="layanan">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Layanan Kami</span>
+        <h2 class="section-title">Kemudahan dalam Satu Aplikasi</h2>
+        <p class="section-subtitle">Nikmati berbagai fitur yang memudahkan Anda dalam membayar retribusi sampah</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card service-card">
+          <div class="card-icon">
+            <i class="fas fa-credit-card"></i>
+          </div>
+          <h3 class="card-title">Pembayaran Online</h3>
+          <p class="card-text">Bayar tagihan dengan QRIS, transfer bank, atau minimarket terdekat</p>
+        </div>
+
+        <div class="card service-card">
+          <div class="card-icon">
+            <i class="fas fa-history"></i>
+          </div>
+          <h3 class="card-title">Riwayat Transaksi</h3>
+          <p class="card-text">Pantau semua transaksi dan tagihan Anda dalam satu dashboard</p>
+        </div>
+
+        <div class="card service-card">
+          <div class="card-icon">
+            <i class="fas fa-bell"></i>
+          </div>
+          <h3 class="card-title">Notifikasi Otomatis</h3>
+          <p class="card-text">Dapatkan pengingat tagihan dan konfirmasi pembayaran secara otomatis</p>
+        </div>
+
+        <div class="card service-card">
+          <div class="card-icon">
+            <i class="fas fa-file-invoice"></i>
+          </div>
+          <h3 class="card-title">Bukti Digital</h3>
+          <p class="card-text">Unduh dan simpan bukti pembayaran dalam format digital</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tarif Section -->
+  <section class="section policy" id="tarif">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Tarif Retribusi</span>
+        <h2 class="section-title">Tarif Terjangkau untuk Semua</h2>
+        <p class="section-subtitle">Pilih kategori sesuai kebutuhan Anda</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card tarif-card">
+          <div class="icon"><i class="fas fa-home"></i></div>
+          <h3 class="title">Rumah Tangga</h3>
+          <div class="price">Rp 25.000<span>/bulan</span></div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Pengangkutan 2x/minggu</li>
+            <li><i class="fas fa-check"></i> Kantong sampah tersedia</li>
+            <li><i class="fas fa-check"></i> Akses edukasi sampah</li>
+          </ul>
+          <a href="register.php" class="btn btn-outline btn-block">Pilih Paket</a>
+        </div>
+
+        <div class="card tarif-card featured">
+          <div class="icon"><i class="fas fa-store"></i></div>
+          <h3 class="title">Usaha / Toko</h3>
+          <div class="price">Rp 50.000<span>/bulan</span></div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Pengangkutan 3x/minggu</li>
+            <li><i class="fas fa-check"></i> Prioritas pengangkutan</li>
+            <li><i class="fas fa-check"></i> Laporan bulanan</li>
+          </ul>
+          <a href="register.php" class="btn btn-primary btn-block">Pilih Paket</a>
+        </div>
+
+        <div class="card tarif-card">
+          <div class="icon"><i class="fas fa-industry"></i></div>
+          <h3 class="title">Industri</h3>
+          <div class="price">Rp 150.000<span>/bulan</span></div>
+          <ul class="features">
+            <li><i class="fas fa-check"></i> Pengangkutan setiap hari</li>
+            <li><i class="fas fa-check"></i> Penanganan khusus</li>
+            <li><i class="fas fa-check"></i> Konsultasi pengelolaan</li>
+          </ul>
+          <a href="register.php" class="btn btn-outline btn-block">Pilih Paket</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="section faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">FAQ</span>
+        <h2 class="section-title">Pertanyaan Umum</h2>
+        <p class="section-subtitle">Temukan jawaban untuk pertanyaan yang sering diajukan</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            Bagaimana cara mendaftar SIPARES?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Klik tombol "Daftar" di halaman utama, isi formulir pendaftaran dengan data yang valid, kemudian Anda
+              akan menerima nomor pelanggan untuk login.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Metode pembayaran apa saja yang tersedia?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Kami menyediakan pembayaran via QRIS (GoPay, OVO, DANA), transfer bank (BCA, BNI, Mandiri, BRI), dan
+              minimarket (Indomaret, Alfamart).</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Kapan tagihan diterbitkan setiap bulan?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Tagihan diterbitkan setiap tanggal 1 dan jatuh tempo pada tanggal 20 setiap bulannya. Pembayaran setelah
+              jatuh tempo akan dikenakan denda 2% per bulan.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            Bagaimana jika saya lupa password?
+            <i class="fas fa-chevron-down"></i>
+          </button>
+          <div class="faq-answer">
+            <p>Klik "Lupa Password" di halaman login, masukkan email Anda, dan ikuti petunjuk yang dikirim ke email
+              untuk reset password.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2>Siap Bergabung dengan SIPARES?</h2>
+      <p>Daftar sekarang dan nikmati kemudahan pembayaran retribusi sampah online</p>
+      <a href="register.php" class="btn btn-lg">
+        <i class="fas fa-rocket"></i> Mulai Sekarang
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <i class="fas fa-recycle"></i>
+            SIPARES
+          </div>
+          <p class="footer-desc">Sistem Pembayaran Retribusi Sampah untuk kemudahan warga dalam membayar iuran sampah
+            secara online.</p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Link Cepat</h4>
+          <ul class="footer-links">
+            <li><a href="#home">Beranda</a></li>
+            <li><a href="#layanan">Layanan</a></li>
+            <li><a href="#tarif">Tarif</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Akun</h4>
+          <ul class="footer-links">
+            <li><a href="login.php">Masuk</a></li>
+            <li><a href="register.php">Daftar</a></li>
+            <li><a href="edukasi.html">Edukasi</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Kontak</h4>
+          <ul class="footer-links">
+            <li><i class="fas fa-phone"></i> (021) 1234-5678</li>
+            <li><i class="fas fa-envelope"></i> info@sipares.go.id</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jl. Lingkungan Hijau No. 123</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 SIPARES. Hak Cipta Dilindungi.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Back to Top -->
+  <button class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- JavaScript -->
+  <script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function () {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+
+    backToTop.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // FAQ Accordion
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', function () {
+        const item = this.parentElement;
+        const isActive = item.classList.contains('active');
+
+        // Close all
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+
+        // Toggle current
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
