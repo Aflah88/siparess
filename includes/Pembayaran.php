@@ -42,6 +42,40 @@ class Pembayaran
   }
 
   /**
+   * Mendapatkan bukti digital / e-kwitansi lengkap
+   */
+  public function getReceiptData($identifier)
+  {
+    $field = is_numeric($identifier) ? 'p.id' : 'p.no_transaksi';
+    $sql = "SELECT p.*,
+                   t.no_tagihan, t.periode_bulan, t.periode_tahun, t.nominal_tagihan,
+                   t.biaya_admin, t.denda, t.total_tagihan, t.tanggal_terbit, t.tanggal_jatuh_tempo,
+                   u.nama_lengkap, u.no_pelanggan, u.nik, u.alamat, u.rt, u.rw, u.kelurahan, u.kecamatan,
+                   u.kategori, u.no_telepon, u.email,
+                   tr.nama_tarif, tr.nominal as tarif_dasar, tr.frekuensi_angkut
+            FROM pembayaran p
+            JOIN tagihan t ON p.tagihan_id = t.id
+            JOIN users u ON p.user_id = u.id
+            LEFT JOIN tarif tr ON t.tarif_id = tr.id
+            WHERE $field = ?";
+
+    $data = $this->db->fetchOne($sql, [$identifier]);
+    if (!$data) {
+      return null;
+    }
+
+    $data['periode_nama'] = namaBulan($data['periode_bulan']) . ' ' . $data['periode_tahun'];
+    $data['metode_nama'] = metodePembayaranLabel($data['metode_pembayaran']);
+    $data['nominal_formatted'] = rupiah($data['nominal_bayar']);
+    $data['tanggal_bayar_formatted'] = $data['tanggal_bayar'] ? tanggal_indo($data['tanggal_bayar'], 'datetime') : '-';
+    $data['tanggal_terbit_formatted'] = tanggal_indo($data['tanggal_terbit'], 'short');
+    $data['tanggal_jatuh_tempo_formatted'] = tanggal_indo($data['tanggal_jatuh_tempo'], 'short');
+    $data['kode_verifikasi'] = strtoupper(substr(hash('sha256', $data['no_transaksi'] . $data['nominal_bayar'] . $data['created_at']), 0, 16));
+
+    return $data;
+  }
+
+  /**
    * Mendapatkan pembayaran berdasarkan ID
    */
   public function getById($id)
@@ -169,7 +203,7 @@ class Pembayaran
       $this->db->query($sql, [$pembayaran['tagihan_id']]);
 
       // Buat notifikasi
-      $this->createNotification($pembayaran['user_id'], $pembayaran['periode_bulan'], $pembayaran['periode_tahun']);
+      $this->createNotification($pembayaran['user_id'], $pembayaran['periode_bulan'], $pembayaran['periode_tahun'], $pembayaran['no_transaksi']);
 
       $this->db->commit();
 
@@ -204,6 +238,19 @@ class Pembayaran
       // Update tagihan kembali ke belum_bayar
       $sql = "UPDATE tagihan SET status = 'belum_bayar' WHERE id = ?";
       $this->db->query($sql, [$pembayaran['tagihan_id']]);
+
+      // Buat notifikasi penolakan
+      $namaBulan = namaBulan($pembayaran['periode_bulan']);
+      $alasanText = !empty($alasan) ? " Alasan: {$alasan}." : "";
+      $this->db->query(
+        "INSERT INTO notifikasi (user_id, judul, pesan, tipe, link) VALUES (?, ?, ?, 'warning', ?)",
+        [
+          $pembayaran['user_id'],
+          "Pembayaran Ditolak",
+          "Pembayaran tagihan bulan {$namaBulan} {$pembayaran['periode_tahun']} ditolak.{$alasanText} Silakan lakukan pembayaran ulang.",
+          "tagihan.php?id=" . $pembayaran['tagihan_id']
+        ]
+      );
 
       $this->db->commit();
 
@@ -333,14 +380,16 @@ class Pembayaran
   /**
    * Buat notifikasi pembayaran berhasil
    */
-  private function createNotification($userId, $bulan, $tahun)
+  private function createNotification($userId, $bulan, $tahun, $noTransaksi = '')
   {
     $namaBulan = namaBulan($bulan);
-    $sql = "INSERT INTO notifikasi (user_id, judul, pesan, tipe) VALUES (?, ?, ?, 'pembayaran')";
+    $link = !empty($noTransaksi) ? "bukti_digital.php?trx=" . urlencode($noTransaksi) : null;
+    $sql = "INSERT INTO notifikasi (user_id, judul, pesan, tipe, link) VALUES (?, ?, ?, 'pembayaran', ?)";
     $this->db->query($sql, [
       $userId,
-      "Pembayaran Berhasil",
-      "Pembayaran tagihan bulan $namaBulan $tahun telah dikonfirmasi. Terima kasih telah membayar tepat waktu."
+      "Pembayaran Berhasil Dilunasi",
+      "Pembayaran tagihan retribusi bulan $namaBulan $tahun telah berhasil dikonfirmasi. Anda dapat melihat dan mengunduh bukti digital resmi sekarang.",
+      $link
     ]);
   }
 }

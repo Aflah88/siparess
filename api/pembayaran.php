@@ -61,6 +61,10 @@ switch ($action) {
     handleRecent($pembayaranModel);
     break;
 
+  case 'receipt':
+    handleReceipt($pembayaranModel);
+    break;
+
   default:
     jsonResponse(['success' => false, 'message' => 'Action tidak valid'], 400);
 }
@@ -130,24 +134,43 @@ function getPaymentInfo($metode, $noTransaksi, $nominal)
   switch ($metode) {
     case 'qris':
       $info['type'] = 'qris';
-      $info['qr_code'] = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' . urlencode($noTransaksi);
+      $info['qr_image'] = '../img/qris.jpg';
+      $info['merchant_name'] = 'SIPARES - Retribusi Kebersihan';
+      $info['account_info'] = '1140027199481 a/n MUHAMMAD ROIF IMAM A (Bank Mandiri)';
       $info['instructions'] = [
-        'Buka aplikasi e-wallet (GoPay, OVO, DANA, dll)',
-        'Pilih menu Scan QR',
-        'Scan kode QR yang ditampilkan',
-        'Konfirmasi pembayaran'
+        'Buka aplikasi e-wallet atau mobile banking (GoPay, OVO, DANA, ShopeePay, Livin by Mandiri, BCA Mobile, dll)',
+        'Pilih menu Scan QRIS',
+        'Arahkan kamera ke kode QRIS di layar atau transfer ke Mandiri: 1140027199481 a/n MUHAMMAD ROIF IMAM A',
+        'Pastikan nominal transfer sesuai: ' . rupiah($nominal),
+        'Selesaikan pembayaran dan upload bukti transfer'
+      ];
+      break;
+
+    case 'transfer_mandiri':
+      $info['type'] = 'transfer';
+      $info['bank'] = 'Mandiri';
+      $info['no_rekening'] = '1140027199481';
+      $info['nama_rekening'] = 'MUHAMMAD ROIF IMAM A';
+      $info['instructions'] = [
+        'Login ke Livin\' by Mandiri atau ATM Mandiri',
+        'Pilih menu Transfer > Rekening Mandiri',
+        'Masukkan nomor rekening: 1140027199481',
+        'Nama penerima: MUHAMMAD ROIF IMAM A',
+        'Masukkan nominal: ' . rupiah($nominal),
+        'Masukkan keterangan: ' . $noTransaksi,
+        'Konfirmasi transfer dan upload bukti pembayaran'
       ];
       break;
 
     case 'transfer_bca':
       $info['type'] = 'transfer';
       $info['bank'] = 'BCA';
-      $info['no_rekening'] = '1234567890';
-      $info['nama_rekening'] = 'SIPARES PEMKOT';
+      $info['no_rekening'] = '1140027199481';
+      $info['nama_rekening'] = 'MUHAMMAD ROIF IMAM A';
       $info['instructions'] = [
-        'Login ke m-BCA atau KlikBCA',
-        'Pilih menu Transfer',
-        'Masukkan nomor rekening: 1234567890',
+        'Login ke BCA Mobile atau KlikBCA',
+        'Pilih menu Transfer Antar Bank ke Bank Mandiri',
+        'Masukkan nomor rekening Mandiri: 1140027199481 a/n MUHAMMAD ROIF IMAM A',
         'Masukkan nominal: ' . rupiah($nominal),
         'Masukkan berita: ' . $noTransaksi,
         'Konfirmasi dan simpan bukti transfer'
@@ -157,27 +180,12 @@ function getPaymentInfo($metode, $noTransaksi, $nominal)
     case 'transfer_bni':
       $info['type'] = 'transfer';
       $info['bank'] = 'BNI';
-      $info['no_rekening'] = '0987654321';
-      $info['nama_rekening'] = 'SIPARES PEMKOT';
+      $info['no_rekening'] = '1140027199481';
+      $info['nama_rekening'] = 'MUHAMMAD ROIF IMAM A (Bank Mandiri)';
       $info['instructions'] = [
         'Login ke BNI Mobile Banking',
-        'Pilih menu Transfer',
-        'Masukkan nomor rekening: 0987654321',
-        'Masukkan nominal: ' . rupiah($nominal),
-        'Masukkan berita: ' . $noTransaksi,
-        'Konfirmasi dan simpan bukti transfer'
-      ];
-      break;
-
-    case 'transfer_mandiri':
-      $info['type'] = 'transfer';
-      $info['bank'] = 'Mandiri';
-      $info['no_rekening'] = '1122334455';
-      $info['nama_rekening'] = 'SIPARES PEMKOT';
-      $info['instructions'] = [
-        'Login ke Livin\' by Mandiri',
-        'Pilih menu Transfer',
-        'Masukkan nomor rekening: 1122334455',
+        'Pilih menu Transfer Antar Bank > Bank Mandiri',
+        'Masukkan nomor rekening: 1140027199481',
         'Masukkan nominal: ' . rupiah($nominal),
         'Masukkan berita: ' . $noTransaksi,
         'Konfirmasi dan simpan bukti transfer'
@@ -400,6 +408,28 @@ function handleRecent($pembayaranModel)
   }
 
   jsonResponse(['success' => true, 'data' => $recent]);
+}
+/**
+ * Handle data bukti pembayaran digital (e-Kwitansi)
+ */
+function handleReceipt($pembayaranModel)
+{
+  $identifier = $_GET['id'] ?? $_GET['trx'] ?? $_GET['no_transaksi'] ?? '';
+
+  if (empty($identifier)) {
+    jsonResponse(['success' => false, 'message' => 'Parameter ID atau nomor transaksi diperlukan'], 400);
+  }
+
+  $receipt = $pembayaranModel->getReceiptData($identifier);
+
+  if (!$receipt) {
+    jsonResponse(['success' => false, 'message' => 'Data bukti digital tidak ditemukan'], 404);
+  }
+
+  jsonResponse([
+    'success' => true,
+    'data' => $receipt
+  ]);
 }
 ?>
 

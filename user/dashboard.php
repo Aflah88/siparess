@@ -8,12 +8,19 @@ if (!Session::isLoggedIn()) {
 require_once INCLUDES_PATH . 'User.php';
 require_once INCLUDES_PATH . 'Tagihan.php';
 require_once INCLUDES_PATH . 'Pembayaran.php';
+require_once INCLUDES_PATH . 'Notifikasi.php';
 
 $userData = Session::user();
 $tagihanModel = new Tagihan();
 $pembayaranModel = new Pembayaran();
+$notifModel = new Notifikasi();
 
 $userId = Session::userId();
+
+// Pengecekan notifikasi otomatis
+$notifModel->triggerAutomatedNotifications($userId);
+$unreadNotifCount = $notifModel->countUnread($userId);
+
 $unpaid = $tagihanModel->getUnpaidByUserId($userId);
 $history = $pembayaranModel->getByUserId($userId, 5);
 $totalTunggakan = array_sum(array_column($unpaid, 'total_tagihan'));
@@ -294,7 +301,7 @@ $totalTunggakan = array_sum(array_column($unpaid, 'total_tagihan'));
         <li><a href="tagihan.php"><i class="fas fa-file-invoice"></i> Tagihan</a></li>
         <li><a href="riwayat.php"><i class="fas fa-history"></i> Riwayat</a></li>
         <li><a href="profil.php"><i class="fas fa-user"></i> Profil</a></li>
-        <li><a href="../edukasi.html"><i class="fas fa-book"></i> Edukasi</a></li>
+        <li><a href="edukasi.php"><i class="fas fa-book"></i> Edukasi</a></li>
       </ul>
       <div class="sidebar-footer">
         <a href="logout.php" class="btn btn-outline btn-block"><i class="fas fa-sign-out-alt"></i> Keluar</a>
@@ -307,6 +314,15 @@ $totalTunggakan = array_sum(array_column($unpaid, 'total_tagihan'));
         <div>
           <h1>Halo, <?php echo e($userData['nama_lengkap']); ?>! 👋</h1>
           <p>No. Pelanggan: <strong><?php echo e($userData['no_pelanggan']); ?></strong></p>
+        </div>
+        <div>
+          <!-- Notification Bell Otomatis -->
+          <button class="btn-notification" id="btn-notification" title="Notifikasi Otomatis">
+            <i class="fas fa-bell"></i>
+            <?php if ($unreadNotifCount > 0): ?>
+              <span class="notification-badge"><?php echo $unreadNotifCount; ?></span>
+            <?php endif; ?>
+          </button>
         </div>
       </div>
 
@@ -364,21 +380,52 @@ $totalTunggakan = array_sum(array_column($unpaid, 'total_tagihan'));
             </a>
             <a href="riwayat.php" class="quick-btn">
               <i class="fas fa-history"></i>
-              <span>Riwayat</span>
+              <span>Riwayat & Bukti</span>
             </a>
-            <a href="profil.php" class="quick-btn">
-              <i class="fas fa-user-edit"></i>
-              <span>Edit Profil</span>
+            <a href="../bukti_digital.php" class="quick-btn" target="_blank">
+              <i class="fas fa-file-invoice"></i>
+              <span>Bukti Digital</span>
             </a>
-            <a href="../edukasi.html" class="quick-btn">
+            <a href="edukasi.php" class="quick-btn">
               <i class="fas fa-book"></i>
               <span>Edukasi</span>
             </a>
           </div>
         </div>
       </div>
+
+      <!-- Bukti Pembayaran Digital Terbaru -->
+      <?php if (!empty($history)): ?>
+      <div class="content-card mt-4" style="margin-top: 1.5rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+          <h2 class="card-title" style="margin:0;"><i class="fas fa-certificate" style="color:var(--primary);"></i> Bukti Pembayaran Digital Terbaru</h2>
+          <a href="riwayat.php" class="btn btn-sm btn-outline">Lihat Semua Riwayat</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:1rem;">
+          <?php foreach (array_slice($history, 0, 3) as $h): ?>
+            <div style="background:var(--gray-50);border:1px solid var(--border-color);border-radius:var(--radius-lg);padding:1rem;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <strong style="font-size:0.9rem;display:block;"><?php echo e($h['no_transaksi']); ?></strong>
+                <small style="color:var(--text-secondary);"><?php echo namaBulan($h['periode_bulan']) . ' ' . $h['periode_tahun']; ?> &bull; <?php echo rupiah($h['nominal_bayar']); ?></small>
+              </div>
+              <div>
+                <?php if ($h['status'] === 'berhasil'): ?>
+                  <a href="../bukti_digital.php?trx=<?php echo urlencode($h['no_transaksi']); ?>" target="_blank" class="btn-receipt">
+                    <i class="fas fa-print"></i> Bukti Digital
+                  </a>
+                <?php else: ?>
+                  <span class="badge badge-warning"><?php echo ucfirst($h['status']); ?></span>
+                <?php endif; ?>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+      <?php endif; ?>
     </main>
   </div>
+
+  <script src="../js/main.js"></script>
 </body>
 
 </html>

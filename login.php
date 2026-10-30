@@ -185,7 +185,7 @@ $flash = Session::getFlash();
       <input type="hidden" name="login_type" id="loginType" value="user">
 
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email" id="emailLabel">Email</label>
         <input type="text" id="email" name="email" placeholder="Masukkan email Anda"
           value="<?php echo e($_POST['email'] ?? ''); ?>" required>
       </div>
@@ -218,7 +218,18 @@ $flash = Session::getFlash();
     function setLoginType(type) {
       document.getElementById('loginType').value = type;
       document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
-      event.target.closest('.login-tab').classList.add('active');
+      const activeBtn = document.querySelector(`.login-tab[onclick*="'${type}'"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const emailLabel = document.getElementById('emailLabel');
+      const emailInput = document.getElementById('email');
+      if (type === 'admin') {
+        emailLabel.textContent = 'Username atau Email Admin';
+        emailInput.placeholder = 'Masukkan username atau email admin (contoh: admin)';
+      } else {
+        emailLabel.textContent = 'Email Pelanggan';
+        emailInput.placeholder = 'Masukkan email Anda (contoh: ahmad@email.com)';
+      }
     }
 
     function togglePassword() {

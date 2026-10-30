@@ -70,7 +70,11 @@ class Admin
     $sql = "UPDATE admin SET last_login = NOW() WHERE id = ?";
     $this->db->query($sql, [$admin['id']]);
 
-    // Set session
+    // Bersihkan sesi user jika ada agar tidak tumpang tindih
+    Session::remove('user_id');
+    Session::remove('user_data');
+
+    // Set session admin
     Session::set('admin_id', $admin['id']);
     Session::set('admin_data', [
       'id' => $admin['id'],

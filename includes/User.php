@@ -149,15 +149,14 @@ class User
       return ['success' => false, 'message' => 'Password salah'];
     }
 
-    // Set session
+    // Bersihkan sesi admin jika ada agar tidak tumpang tindih
+    Session::remove('admin_id');
+    Session::remove('admin_data');
+
+    // Set session user
     Session::set('user_id', $user['id']);
-    Session::set('user_data', [
-      'id' => $user['id'],
-      'no_pelanggan' => $user['no_pelanggan'],
-      'nama_lengkap' => $user['nama_lengkap'],
-      'email' => $user['email'],
-      'kategori' => $user['kategori']
-    ]);
+    unset($user['password']);
+    Session::set('user_data', $user);
     Session::regenerate();
 
     logActivity('User login', 'users', $user['id'], $user['id']);
@@ -214,6 +213,63 @@ class User
     } catch (Exception $e) {
       return ['success' => false, 'message' => 'Gagal memperbarui profil'];
     }
+  }
+
+  /**
+   * Update data user oleh admin
+   */
+  public function updateUser($id, $data)
+  {
+    try {
+      $sql = "UPDATE users SET
+                    nama_lengkap = ?,
+                    nik = ?,
+                    email = ?,
+                    no_telepon = ?,
+                    alamat = ?,
+                    rt = ?,
+                    rw = ?,
+                    kelurahan = ?,
+                    kecamatan = ?,
+                    kategori = ?,
+                    status = ?
+                    WHERE id = ?";
+
+      $this->db->query($sql, [
+        $data['nama_lengkap'],
+        $data['nik'],
+        $data['email'],
+        $data['no_telepon'],
+        $data['alamat'],
+        $data['rt'] ?? '',
+        $data['rw'] ?? '',
+        $data['kelurahan'] ?? '',
+        $data['kecamatan'] ?? '',
+        $data['kategori'] ?? 'rumah_tangga',
+        $data['status'] ?? 'aktif',
+        $id
+      ]);
+
+      logActivity('Update data user oleh admin', 'users', $id, $id, Session::adminId());
+      return ['success' => true, 'message' => 'Data pelanggan berhasil diperbarui'];
+    } catch (Exception $e) {
+      return ['success' => false, 'message' => 'Gagal memperbarui data: ' . $e->getMessage()];
+    }
+  }
+
+  /**
+   * Toggle status aktif/nonaktif
+   */
+  public function toggleStatus($id)
+  {
+    $user = $this->getById($id);
+    if (!$user) {
+      return ['success' => false, 'message' => 'Pelanggan tidak ditemukan'];
+    }
+    $newStatus = ($user['status'] === 'aktif') ? 'nonaktif' : 'aktif';
+    $this->db->query("UPDATE users SET status = ? WHERE id = ?", [$newStatus, $id]);
+    logActivity('Ubah status user', 'users', $id, $id, Session::adminId());
+    return ['success' => true, 'message' => "Status pelanggan diubah menjadi {$newStatus}", 'status' => $newStatus];
   }
 
   /**

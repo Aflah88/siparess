@@ -74,41 +74,209 @@ function initMobileMenu() {
 }
 
 /**
- * Notification Panel Toggle
+ * Notification Panel & Automated Notifications Manager
  */
 function initNotificationPanel() {
     const btnNotification = document.getElementById('btn-notification');
-    const notificationPanel = document.getElementById('notification-panel');
+    if (!btnNotification) return;
 
-    if (!btnNotification || !notificationPanel) return;
+    // Pastikan container parent relatif agar panel posisinya pas
+    if (btnNotification.parentElement) {
+        btnNotification.parentElement.style.position = 'relative';
+    }
 
+    // Buat panel otomatis jika belum ada di DOM
+    let notificationPanel = document.getElementById('notification-panel');
+    if (!notificationPanel) {
+        notificationPanel = document.createElement('div');
+        notificationPanel.id = 'notification-panel';
+        notificationPanel.className = 'notification-panel';
+        notificationPanel.innerHTML = `
+            <div class="notification-header">
+                <h4><i class="fas fa-bell"></i> Notifikasi <span id="notif-count-text" style="font-size:0.78rem;font-weight:600;color:var(--primary-600);">(0)</span></h4>
+                <button type="button" class="mark-read" id="btn-mark-all-read">Tandai semua dibaca</button>
+            </div>
+            <div class="notification-list" id="notification-list">
+                <div class="notification-empty">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Memuat notifikasi...</p>
+                </div>
+            </div>
+        `;
+        btnNotification.parentElement.appendChild(notificationPanel);
+    }
+
+    // Toggle panel
     btnNotification.addEventListener('click', (e) => {
         e.stopPropagation();
-        notificationPanel.classList.toggle('active');
+        const isActive = notificationPanel.classList.toggle('active');
+        if (isActive) {
+            loadNotifications();
+        }
     });
 
     // Close panel when clicking outside
     document.addEventListener('click', (e) => {
-        if (!notificationPanel.contains(e.target) && e.target !== btnNotification) {
+        if (!notificationPanel.contains(e.target) && !btnNotification.contains(e.target)) {
             notificationPanel.classList.remove('active');
         }
     });
 
-    // Mark all as read
-    const markReadBtn = notificationPanel.querySelector('.mark-read');
-    if (markReadBtn) {
-        markReadBtn.addEventListener('click', () => {
-            const unreadItems = notificationPanel.querySelectorAll('.notification-item.unread');
-            unreadItems.forEach(item => {
-                item.classList.remove('unread');
+    // Load notifikasi dari server API
+    function loadNotifications() {
+        // Tentukan path API relatif yang tepat (baik dari / atau dari /user/)
+        const apiPath = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/') 
+            ? '../api/notifikasi.php?action=list' 
+            : 'api/notifikasi.php?action=list';
+
+        fetch(apiPath)
+            .then(res => res.json())
+            .then(res => {
+                if (!res.success) return;
+
+                updateBadge(res.unread_count);
+                renderNotificationList(res.data);
+            })
+            .catch(err => {
+                console.warn('Gagal memuat notifikasi:', err);
             });
-            const badge = btnNotification.querySelector('.notification-badge');
-            if (badge) {
-                badge.textContent = '0';
-                badge.style.display = 'none';
+    }
+
+    // Update badge counter di bell
+    function updateBadge(count) {
+        let badge = btnNotification.querySelector('.notification-badge');
+        if (!badge) {
+            badge = document.createElement('span');
+            badge.className = 'notification-badge';
+            btnNotification.appendChild(badge);
+        }
+
+        if (count > 0) {
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.style.display = 'inline-block';
+        } else {
+            badge.textContent = '0';
+            badge.style.display = 'none';
+        }
+
+        const countText = document.getElementById('notif-count-text');
+        if (countText) {
+            countText.textContent = `(${count} baru)`;
+        }
+    }
+
+    // Render list HTML
+    function renderNotificationList(items) {
+        const listContainer = document.getElementById('notification-list');
+        if (!listContainer) return;
+
+        if (!items || items.length === 0) {
+            listContainer.innerHTML = `
+                <div class="notification-empty">
+                    <i class="fas fa-bell-slash"></i>
+                    <p>Tidak ada notifikasi saat ini</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        items.forEach(item => {
+            const isUnread = item.is_read == 0 ? 'unread' : '';
+            let iconClass = 'fa-info-circle';
+            let boxClass = item.tipe || 'info';
+
+            if (item.tipe === 'tagihan') {
+                iconClass = 'fa-file-invoice-dollar';
+            } else if (item.tipe === 'pembayaran') {
+                iconClass = 'fa-check-circle';
+            } else if (item.tipe === 'warning') {
+                iconClass = 'fa-exclamation-triangle';
             }
+
+            // Tentukan link tujuan yang aman
+            let targetLink = '#';
+            if (item.link) {
+                targetLink = item.link;
+                if (!window.location.pathname.includes('/user/') && targetLink.startsWith('tagihan.php')) {
+                    targetLink = 'user/' + targetLink;
+                }
+            }
+
+            html += `
+                <div class="notification-item ${isUnread}" data-id="${item.id}" data-link="${targetLink}">
+                    <div class="notification-icon-box ${boxClass}">
+                        <i class="fas ${iconClass}"></i>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-item-title">${escapeHtml(item.judul)}</div>
+                        <div class="notification-item-text">${escapeHtml(item.pesan)}</div>
+                        <div class="notification-item-time">
+                            <i class="far fa-clock"></i> ${item.time_ago || 'Baru saja'}
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+
+        listContainer.innerHTML = html;
+
+        // Klik per item
+        listContainer.querySelectorAll('.notification-item').forEach(el => {
+            el.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const notifId = this.getAttribute('data-id');
+                const link = this.getAttribute('data-link');
+
+                const markApiPath = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/')
+                    ? '../api/notifikasi.php?action=mark_read'
+                    : 'api/notifikasi.php?action=mark_read';
+
+                fetch(markApiPath, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: notifId })
+                }).finally(() => {
+                    if (link && link !== '#') {
+                        window.location.href = link;
+                    } else {
+                        loadNotifications();
+                    }
+                });
+            });
         });
     }
+
+    // Tombol tandai semua dibaca
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'btn-mark-all-read') {
+            e.stopPropagation();
+            const markAllPath = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/')
+                ? '../api/notifikasi.php?action=mark_all'
+                : 'api/notifikasi.php?action=mark_all';
+
+            fetch(markAllPath, { method: 'POST' })
+                .then(r => r.json())
+                .then(() => {
+                    updateBadge(0);
+                    const unreadItems = notificationPanel.querySelectorAll('.notification-item.unread');
+                    unreadItems.forEach(i => i.classList.remove('unread'));
+                });
+        }
+    });
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    // Jalankan pemeriksaan awal otomatis badge count saat halaman dimuat
+    loadNotifications();
 }
 
 /**

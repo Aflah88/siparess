@@ -355,9 +355,16 @@ $recentPayments = (new Pembayaran())->getRecent(8);
 
     <!-- Main Content -->
     <main class="main">
-      <div class="page-header">
-        <h1>Dashboard</h1>
-        <p><?php echo tanggal_indo(date('Y-m-d'), 'full'); ?></p>
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <div>
+          <h1>Dashboard</h1>
+          <p><?php echo tanggal_indo(date('Y-m-d'), 'full'); ?></p>
+        </div>
+        <div>
+          <button onclick="runBulkNotif()" class="btn btn-sm btn-outline" style="background:#fff;cursor:pointer;">
+            <i class="fas fa-bell"></i> Jalankan Notifikasi Otomatis Masal
+          </button>
+        </div>
       </div>
 
       <!-- Stats -->
@@ -448,7 +455,7 @@ $recentPayments = (new Pembayaran())->getRecent(8);
                       <button class="action-btn danger" onclick="rejectPay(<?php echo $p['id']; ?>)" title="Tolak"><i
                           class="fas fa-times"></i></button>
                     <?php else: ?>
-                      <span style="color:var(--text-secondary);font-size:0.8rem;">-</span>
+                      <a href="../bukti_digital.php?trx=<?php echo urlencode($p['no_transaksi']); ?>" target="_blank" class="action-btn" style="background:#ecfdf5;color:#047857;text-decoration:none;" title="Lihat Bukti Digital"><i class="fas fa-file-invoice"></i></a>
                     <?php endif; ?>
                   </td>
                 </tr>
@@ -479,6 +486,11 @@ $recentPayments = (new Pembayaran())->getRecent(8);
           body: JSON.stringify({ id: id, alasan: alasan })
         }).then(r => r.json()).then(d => { alert(d.message); if (d.success) location.reload(); });
       }
+    }
+    function runBulkNotif() {
+      fetch('../api/notifikasi.php?action=cron')
+        .then(r => r.json())
+        .then(d => { alert(d.message); });
     }
   </script>
 </body>

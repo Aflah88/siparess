@@ -4,38 +4,387 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Edukasi Pengelolaan Sampah - SIPARES">
-  <title>Edukasi - SIPARES</title>
+  <meta name="description" content="Pusat Edukasi & Pengelolaan Sampah - SIPARES">
+  <title>Pusat Edukasi Sampah - SIPARES</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
     rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/pages.css">
+  <style>
+    /* ========================================================
+       Edukasi Beranda — Desain Identik dengan Fitur Edukasi Pengguna
+       ======================================================== */
+
+    body {
+      background: var(--bg-primary);
+    }
+
+    /* Kategori Badges & Filter */
+    .category-filter {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 0;
+    }
+
+    .cat-pill {
+      padding: 0.5rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .cat-pill:hover,
+    .cat-pill.active {
+      background: var(--primary);
+      color: var(--white);
+      border-color: var(--primary);
+      box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    }
+
+    /* Search Input Box */
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 0.4rem 0.8rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .search-box input {
+      border: none;
+      outline: none;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text-primary);
+      width: 200px;
+      background: transparent;
+    }
+
+    .search-box i {
+      color: var(--text-secondary);
+    }
+
+    /* Banner Kampanye Lingkungan */
+    .campaign-banner {
+      background: linear-gradient(135deg, #059669, #10b981);
+      color: var(--white);
+      padding: 2rem 2.5rem;
+      border-radius: var(--radius-xl);
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      box-shadow: 0 10px 25px rgba(5, 150, 105, 0.2);
+    }
+
+    .campaign-banner h3 {
+      margin: 0 0 0.5rem;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .campaign-banner p {
+      margin: 0;
+      opacity: 0.95;
+      font-size: 0.95rem;
+      max-width: 650px;
+      line-height: 1.6;
+    }
+
+    .campaign-banner .btn-banner {
+      background: var(--white);
+      color: #059669;
+      border: 2px solid var(--white);
+      font-weight: 700;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-lg);
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .campaign-banner .btn-banner:hover {
+      background: transparent;
+      color: var(--white);
+    }
+
+    /* Grid Artikel Edukasi */
+    .articles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .article-card {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .article-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.12);
+      border-color: var(--primary-light);
+    }
+
+    .article-header {
+      padding: 1.25rem;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .badge-cat {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .cat-organik { background: #dcfce7; color: #15803d; }
+    .cat-anorganik { background: #dbeafe; color: #1e40af; }
+    .cat-b3 { background: #fee2e2; color: #b91c1c; }
+    .cat-residu { background: #fef3c7; color: #b45309; }
+    .cat-tips { background: #f3e8ff; color: #7e22ce; }
+    .cat-umum { background: #e2e8f0; color: #334155; }
+
+    .article-body {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .article-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .article-summary {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      flex: 1;
+      margin-bottom: 1.25rem;
+    }
+
+    .article-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid var(--gray-100);
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    /* Modal Detail Pembaca Artikel */
+    .article-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(17, 24, 39, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .article-modal.active {
+      display: flex;
+      animation: modalFadeIn 0.25s ease;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.97); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    .modal-dialog {
+      background: var(--white);
+      border-radius: var(--radius-2xl);
+      max-width: 860px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2.5rem;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: var(--gray-100);
+      border: none;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--gray-600);
+      font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+
+    .modal-close:hover {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+
+    .modal-summary-box {
+      background: var(--primary-light);
+      padding: 1.25rem;
+      border-radius: var(--radius-lg);
+      border-left: 4px solid var(--primary);
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+      color: var(--gray-800);
+      line-height: 1.6;
+    }
+
+    .modal-body-content {
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--text-primary);
+    }
+
+    .modal-body-content h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: 0.75rem;
+      color: var(--gray-900);
+    }
+
+    .modal-body-content ul,
+    .modal-body-content ol {
+      padding-left: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .modal-body-content li {
+      margin-bottom: 0.5rem;
+      color: var(--gray-700);
+    }
+
+    .modal-tip-box {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: var(--radius-lg);
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: flex-start;
+      color: #065f46;
+    }
+
+    .modal-tip-box i {
+      font-size: 1.25rem;
+      color: var(--primary);
+      margin-top: 0.15rem;
+    }
+
+    /* Empty Search State */
+    .empty-state {
+      background: var(--white);
+      border-radius: var(--radius-xl);
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      grid-column: 1 / -1;
+      display: none;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      color: var(--text-secondary);
+      opacity: 0.35;
+      margin-bottom: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .modal-dialog {
+        padding: 1.5rem;
+      }
+      .campaign-banner {
+        padding: 1.5rem;
+      }
+      .articles-grid {
+        grid-template-columns: 1fr;
+      }
+      .search-box input {
+        width: 140px;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <!-- Navigation -->
+  <!-- Navbar — Seragam dengan Beranda SIPARES -->
   <nav class="navbar scrolled" id="navbar">
-    <div class="nav-container">
-      <a href="index.html" class="nav-logo">
-        <div class="logo-icon"><i class="fas fa-recycle"></i></div>
-        <span class="logo-text">SIPARES</span>
+    <div class="container">
+      <a href="index.php" class="navbar-brand">
+        <i class="fas fa-recycle"></i>
+        SIPARES
       </a>
-      <div class="nav-menu" id="nav-menu">
-        <a href="index.html" class="nav-link"><i class="fas fa-home"></i><span>Beranda</span></a>
-        <a href="pembayaran.html" class="nav-link"><i class="fas fa-credit-card"></i><span>Pembayaran</span></a>
-        <a href="riwayat.html" class="nav-link"><i class="fas fa-history"></i><span>Riwayat</span></a>
-        <a href="edukasi.html" class="nav-link active"><i class="fas fa-book-open"></i><span>Edukasi</span></a>
-        <a href="dashboard.html" class="nav-link"><i class="fas fa-chart-line"></i><span>Dashboard</span></a>
-      </div>
+
+      <ul class="nav-links">
+        <li><a href="index.php">Beranda</a></li>
+        <li><a href="index.php#layanan">Layanan</a></li>
+        <li><a href="index.php#tarif">Tarif</a></li>
+        <li><a href="index.php#faq">FAQ</a></li>
+        <li><a href="edukasi.html" class="active">Edukasi</a></li>
+      </ul>
+
       <div class="nav-actions">
-        <button class="btn-notification" id="btn-notification"><i class="fas fa-bell"></i><span
-            class="notification-badge">3</span></button>
-        <a href="login.html" class="btn btn-primary btn-login"><i class="fas fa-user"></i><span>Masuk</span></a>
+        <a href="login.php" class="btn btn-outline btn-sm">Masuk</a>
+        <a href="register.php" class="btn btn-primary btn-sm">Daftar</a>
       </div>
-      <button class="nav-toggle" id="nav-toggle"><span></span><span></span><span></span></button>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
     </div>
   </nav>
 
@@ -48,176 +397,620 @@
     <div class="container">
       <div class="page-header-content">
         <div class="breadcrumb">
-          <a href="index.html">Beranda</a>
+          <a href="index.php"><i class="fas fa-home"></i> Beranda</a>
           <i class="fas fa-chevron-right"></i>
           <span>Edukasi</span>
         </div>
-        <h1 class="page-title">Edukasi Pengelolaan Sampah</h1>
-        <p class="page-subtitle">Pelajari cara mengelola sampah dengan benar untuk lingkungan yang lebih bersih dan
-          sehat</p>
+        <h1 class="page-title"><i class="fas fa-leaf"></i> Pusat Edukasi &amp; Pengelolaan Sampah</h1>
+        <p class="page-subtitle">Tingkatkan wawasan memilah, mendaur ulang, dan merawat lingkungan demi kota yang asri dan bersih</p>
       </div>
     </div>
   </section>
 
-  <!-- Education Section -->
-  <section class="education-section">
+  <!-- Main Education Section (Mirip Fitur Edukasi Pengguna) -->
+  <section class="section" style="padding: 3rem 0 5rem;">
     <div class="container">
-      <!-- Waste Classification -->
-      <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
-        <span class="section-badge">Klasifikasi Sampah</span>
-        <h2 class="section-title">Kenali Jenis-Jenis Sampah</h2>
-      </div>
 
-      <div class="education-grid">
-        <div class="education-card">
-          <div class="education-card-image" style="background: linear-gradient(135deg, #22c55e, #16a34a);">
-            <i class="fas fa-apple-alt"></i>
-          </div>
-          <div class="education-card-content">
-            <h3>Sampah Organik</h3>
-            <p>Sampah organik adalah sampah yang berasal dari makhluk hidup dan dapat terurai secara alami dalam waktu
-              singkat. Contohnya sisa makanan, daun, kulit buah, dan sayuran.</p>
-            <div style="background: #dcfce7; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;">
-              <strong style="color: #16a34a;"><i class="fas fa-lightbulb"></i> Tips:</strong>
-              <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #166534;">Sampah organik dapat dijadikan kompos
-                untuk pupuk tanaman. Pisahkan dari sampah lainnya!</p>
-            </div>
-          </div>
+      <!-- Filter & Search Bar -->
+      <div style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <div class="category-filter" id="categoryFilter">
+          <button class="cat-pill active" data-filter="all">Semua Kategori</button>
+          <button class="cat-pill" data-filter="organik"><i class="fas fa-apple-alt"></i> Organik</button>
+          <button class="cat-pill" data-filter="anorganik"><i class="fas fa-bottle-water"></i> Anorganik</button>
+          <button class="cat-pill" data-filter="b3"><i class="fas fa-biohazard"></i> B3</button>
+          <button class="cat-pill" data-filter="residu"><i class="fas fa-trash-alt"></i> Residu</button>
+          <button class="cat-pill" data-filter="tips"><i class="fas fa-lightbulb"></i> Tips &amp; Bank Sampah</button>
         </div>
 
-        <div class="education-card">
-          <div class="education-card-image" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="searchInput" placeholder="Cari materi edukasi...">
+        </div>
+      </div>
+
+      <!-- Banner Kampanye Lingkungan -->
+      <div class="campaign-banner">
+        <div>
+          <h3><i class="fas fa-recycle"></i> Gerakan Pilah Sampah dari Rumah</h3>
+          <p>Kurangi timbulan sampah residu ke TPA dengan memilah sampah organik untuk kompos dan menyetorkan botol plastik ke Bank Sampah terdekat hari ini.</p>
+        </div>
+        <a href="register.php" class="btn-banner">
+          <i class="fas fa-user-plus"></i> Daftar Warga SIPARES
+        </a>
+      </div>
+
+      <!-- Articles Grid -->
+      <div class="articles-grid" id="articlesGrid">
+
+        <!-- Artikel 1: Organik -->
+        <article class="article-card" data-category="organik" data-id="1">
+          <div class="article-header">
+            <span class="badge-cat cat-organik">ORGANIK</span>
+            <span style="font-size:0.8rem;color:var(--text-secondary);">
+              <i class="far fa-eye"></i> 1.420 views
+            </span>
+          </div>
+          <div class="article-body">
+            <h2 class="article-title">Mengenal Sampah Organik dan Cara Pengolahannya Menjadi Kompos</h2>
+            <p class="article-summary">Pelajari cara mengolah sisa sayuran, buah-buahan, dan daun kering menjadi pupuk kompos bernilai tinggi untuk tanaman rumah.</p>
+            <div class="article-footer">
+              <span><i class="far fa-calendar-alt"></i> 12 Okt 2026</span>
+              <button class="btn btn-sm btn-outline btn-read" data-id="1">
+                Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Artikel 2: Anorganik -->
+        <article class="article-card" data-category="anorganik" data-id="2">
+          <div class="article-header">
+            <span class="badge-cat cat-anorganik">ANORGANIK</span>
+            <span style="font-size:0.8rem;color:var(--text-secondary);">
+              <i class="far fa-eye"></i> 985 views
+            </span>
+          </div>
+          <div class="article-body">
+            <h2 class="article-title">Bahaya Sampah Plastik bagi Lingkungan dan Solusi Daur Ulang</h2>
+            <p class="article-summary">Ketahui mengapa plastik membutuhkan ratusan tahun untuk terurai di alam dan langkah efektif memilah botol PET agar bernilai jual.</p>
+            <div class="article-footer">
+              <span><i class="far fa-calendar-alt"></i> 18 Okt 2026</span>
+              <button class="btn btn-sm btn-outline btn-read" data-id="2">
+                Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Artikel 3: B3 -->
+        <article class="article-card" data-category="b3" data-id="3">
+          <div class="article-header">
+            <span class="badge-cat cat-b3">B3</span>
+            <span style="font-size:0.8rem;color:var(--text-secondary);">
+              <i class="far fa-eye"></i> 812 views
+            </span>
+          </div>
+          <div class="article-body">
+            <h2 class="article-title">Panduan Aman Mengelola Sampah B3 (Bahan Berbahaya &amp; Beracun) di Rumah</h2>
+            <p class="article-summary">Langkah tepat memisahkan baterai bekas, lampu neon, kemasan aerosol, dan obat kadaluwarsa agar tidak meracuni air tanah.</p>
+            <div class="article-footer">
+              <span><i class="far fa-calendar-alt"></i> 22 Okt 2026</span>
+              <button class="btn btn-sm btn-outline btn-read" data-id="3">
+                Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Artikel 4: Residu -->
+        <article class="article-card" data-category="residu" data-id="4">
+          <div class="article-header">
+            <span class="badge-cat cat-residu">RESIDU</span>
+            <span style="font-size:0.8rem;color:var(--text-secondary);">
+              <i class="far fa-eye"></i> 640 views
+            </span>
+          </div>
+          <div class="article-body">
+            <h2 class="article-title">Mengenal Sampah Residu dan Strategi Mengurangi Beban TPA</h2>
+            <p class="article-summary">Pahami jenis sampah yang tidak bisa didaur ulang atau dikomposkan seperti styrofoam kotor dan popok, serta alternatif penggantinya.</p>
+            <div class="article-footer">
+              <span><i class="far fa-calendar-alt"></i> 25 Okt 2026</span>
+              <button class="btn btn-sm btn-outline btn-read" data-id="4">
+                Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Artikel 5: Tips & Bank Sampah -->
+        <article class="article-card" data-category="tips" data-id="5">
+          <div class="article-header">
+            <span class="badge-cat cat-tips">TIPS &amp; BANK SAMPAH</span>
+            <span style="font-size:0.8rem;color:var(--text-secondary);">
+              <i class="far fa-eye"></i> 1.730 views
+            </span>
+          </div>
+          <div class="article-body">
+            <h2 class="article-title">Cara Mendirikan Bank Sampah di Tingkat RT dan Menghasilkan Cuan</h2>
+            <p class="article-summary">Panduan praktis membentuk pengurus bank sampah warga, menentukan daftar harga beli kardus dan botol, serta pembukuan kas yang transparan.</p>
+            <div class="article-footer">
+              <span><i class="far fa-calendar-alt"></i> 28 Okt 2026</span>
+              <button class="btn btn-sm btn-outline btn-read" data-id="5">
+                Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Artikel 6: Tips 3R -->
+        <article class="article-card" data-category="tips" data-id="6">
+          <div class="article-header">
+            <span class="badge-cat cat-tips">TIPS &amp; BANK SAMPAH</span>
+            <span style="font-size:0.8rem;color:var(--text-secondary);">
+              <i class="far fa-eye"></i> 1.250 views
+            </span>
+          </div>
+          <div class="article-body">
+            <h2 class="article-title">Penerapan Prinsip 3R (Reduce, Reuse, Recycle) dalam Kehidupan Sehari-hari</h2>
+            <p class="article-summary">Langkah mudah memulai gaya hidup minim sampah (zero waste): membawa wadah bekal, menolak sedotan plastik, dan menggunakan barang berkali-kali.</p>
+            <div class="article-footer">
+              <span><i class="far fa-calendar-alt"></i> 29 Okt 2026</span>
+              <button class="btn btn-sm btn-outline btn-read" data-id="6">
+                Baca Selengkapnya <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+          <i class="fas fa-book-open"></i>
+          <h3>Tidak Ada Materi yang Cocok</h3>
+          <p style="color:var(--text-secondary);margin:0.5rem 0 1.25rem;">Kata kunci pencarian atau kategori yang Anda pilih tidak menemukan artikel terkait.</p>
+          <button class="btn btn-outline btn-sm" id="btnResetFilter">Reset Filter &amp; Pencarian</button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Modal Detail Artikel (Interactive Reader Mirip Fitur Pengguna) -->
+  <div class="article-modal" id="articleModal">
+    <div class="modal-dialog">
+      <button class="modal-close" id="modalCloseBtn" title="Tutup">&times;</button>
+      
+      <div style="margin-bottom:1rem;">
+        <span class="badge-cat" id="modalCategoryBadge">KATEGORI</span>
+        <span style="color:var(--text-secondary);font-size:0.85rem;margin-left:0.75rem;">
+          <i class="far fa-calendar-alt"></i> <span id="modalDate">12 Okt 2026</span>
+        </span>
+        <span style="color:var(--text-secondary);font-size:0.85rem;margin-left:0.75rem;">
+          <i class="far fa-eye"></i> <span id="modalViews">1.420</span>x dibaca
+        </span>
+      </div>
+
+      <h1 style="font-size:1.85rem;line-height:1.3;margin-bottom:1rem;color:var(--text-primary);" id="modalTitle">
+        Judul Artikel Edukasi
+      </h1>
+
+      <div class="modal-summary-box">
+        <strong>Ringkasan:</strong> <span id="modalSummary">Ringkasan artikel akan tampil di sini.</span>
+      </div>
+
+      <div class="modal-body-content" id="modalContent">
+        <!-- Konten lengkap diisi via JavaScript -->
+      </div>
+
+      <div style="margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid var(--border-color);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+        <button class="btn btn-primary" id="modalBackBtn">
+          <i class="fas fa-arrow-left"></i> Kembali ke Daftar Panduan
+        </button>
+        <a href="login.php" class="btn btn-outline">
+          <i class="fas fa-file-invoice"></i> Masuk &amp; Cek Tagihan
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA Section -->
+  <section class="cta">
+    <div class="container">
+      <h2>Ingin Berkontribusi untuk Lingkungan?</h2>
+      <p>Mulai dari langkah kecil — bayar retribusi tepat waktu dan pilah sampah dari rumah Anda hari ini.</p>
+      <a href="register.php" class="btn btn-lg">
+        <i class="fas fa-rocket"></i> Daftar Sekarang
+      </a>
+    </div>
+  </section>
+
+  <!-- Footer Standar SIPARES -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
             <i class="fas fa-recycle"></i>
+            SIPARES
           </div>
-          <div class="education-card-content">
-            <h3>Sampah Anorganik</h3>
-            <p>Sampah anorganik adalah sampah yang sulit terurai dan membutuhkan waktu sangat lama untuk hancur.
-              Termasuk plastik, kaca, logam, dan kertas.</p>
-            <div style="background: #dbeafe; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;">
-              <strong style="color: #2563eb;"><i class="fas fa-lightbulb"></i> Tips:</strong>
-              <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #1e40af;">Sampah anorganik dapat didaur ulang
-                menjadi produk baru. Bersihkan sebelum dibuang!</p>
-            </div>
-          </div>
+          <p class="footer-desc">Sistem Pembayaran Retribusi Sampah untuk kemudahan warga dalam membayar iuran sampah secara online dan mendukung kota yang bersih serta berkelanjutan.</p>
         </div>
 
-        <div class="education-card">
-          <div class="education-card-image" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
-            <i class="fas fa-radiation"></i>
-          </div>
-          <div class="education-card-content">
-            <h3>Sampah B3 (Berbahaya & Beracun)</h3>
-            <p>Sampah B3 mengandung bahan berbahaya yang memerlukan penanganan khusus. Contohnya baterai, lampu neon,
-              obat kedaluwarsa, dan limbah elektronik.</p>
-            <div style="background: #fee2e2; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;">
-              <strong style="color: #dc2626;"><i class="fas fa-exclamation-triangle"></i> Perhatian:</strong>
-              <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #991b1b;">JANGAN buang sampah B3 bersama sampah
-                rumah tangga! Kumpulkan di tempat khusus.</p>
-            </div>
-          </div>
+        <div>
+          <h4 class="footer-title">Link Cepat</h4>
+          <ul class="footer-links">
+            <li><a href="index.php">Beranda</a></li>
+            <li><a href="index.php#layanan">Layanan</a></li>
+            <li><a href="index.php#tarif">Tarif</a></li>
+            <li><a href="index.php#faq">FAQ</a></li>
+          </ul>
         </div>
 
-        <div class="education-card">
-          <div class="education-card-image" style="background: linear-gradient(135deg, #6b7280, #4b5563);">
-            <i class="fas fa-trash-alt"></i>
-          </div>
-          <div class="education-card-content">
-            <h3>Sampah Residu</h3>
-            <p>Sampah residu adalah sampah yang tidak dapat didaur ulang, dikompos, atau dimanfaatkan kembali. Contohnya
-              popok, pembalut, styrofoam kotor.</p>
-            <div style="background: #f3f4f6; padding: 1rem; border-radius: 0.75rem; margin-top: 1rem;">
-              <strong style="color: #4b5563;"><i class="fas fa-lightbulb"></i> Tips:</strong>
-              <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #374151;">Minimalisir penggunaan produk sekali
-                pakai untuk mengurangi sampah residu.</p>
-            </div>
-          </div>
+        <div>
+          <h4 class="footer-title">Akun &amp; Layanan</h4>
+          <ul class="footer-links">
+            <li><a href="login.php">Masuk Akun</a></li>
+            <li><a href="register.php">Registrasi Warga</a></li>
+            <li><a href="edukasi.html">Pusat Edukasi</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Kontak Kami</h4>
+          <ul class="footer-links">
+            <li><i class="fas fa-phone"></i> (021) 1234-5678</li>
+            <li><i class="fas fa-envelope"></i> info@sipares.go.id</li>
+            <li><i class="fas fa-map-marker-alt"></i> Jl. Lingkungan Hijau No. 123</li>
+          </ul>
         </div>
       </div>
 
-      <!-- 3R Concept -->
-      <div style="margin-top: 5rem;">
-        <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
-          <span class="section-badge">Prinsip 3R</span>
-          <h2 class="section-title">Reduce, Reuse, Recycle</h2>
-        </div>
-
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
-          <div
-            style="background: white; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); text-align: center;">
-            <div
-              style="width: 80px; height: 80px; background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: white; font-size: 2rem;">
-              <i class="fas fa-minus-circle"></i>
-            </div>
-            <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Reduce</h3>
-            <p style="color: #6b7280;">Kurangi penggunaan barang sekali pakai. Bawa tas belanja dan botol minum sendiri.
-            </p>
-          </div>
-
-          <div
-            style="background: white; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); text-align: center;">
-            <div
-              style="width: 80px; height: 80px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: white; font-size: 2rem;">
-              <i class="fas fa-redo"></i>
-            </div>
-            <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Reuse</h3>
-            <p style="color: #6b7280;">Gunakan kembali barang yang masih layak. Kreasikan menjadi barang bermanfaat.</p>
-          </div>
-
-          <div
-            style="background: white; padding: 2rem; border-radius: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); text-align: center;">
-            <div
-              style="width: 80px; height: 80px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; color: white; font-size: 2rem;">
-              <i class="fas fa-recycle"></i>
-            </div>
-            <h3 style="font-size: 1.5rem; font-weight: 700; color: #1f2937; margin-bottom: 1rem;">Recycle</h3>
-            <p style="color: #6b7280;">Daur ulang sampah menjadi produk baru. Pilah sampah untuk memudahkan proses.</p>
-          </div>
-        </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 SIPARES. Hak Cipta Dilindungi.</p>
       </div>
-
-      <!-- Environmental Impact -->
-      <div
-        style="margin-top: 5rem; background: linear-gradient(135deg, #064e3b, #047857); padding: 4rem; border-radius: 2rem; color: white;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
-          <div>
-            <h2 style="font-size: 2.25rem; font-weight: 800; margin-bottom: 1.5rem;">Dampak Sampah pada Lingkungan</h2>
-            <ul style="list-style: none; display: flex; flex-direction: column; gap: 1rem;">
-              <li style="display: flex; align-items: flex-start; gap: 1rem;">
-                <i class="fas fa-times-circle" style="color: #f87171; margin-top: 0.25rem;"></i>
-                <span>Pencemaran tanah dan air tanah</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: 1rem;">
-                <i class="fas fa-times-circle" style="color: #f87171; margin-top: 0.25rem;"></i>
-                <span>Emisi gas rumah kaca dari pembusukan sampah</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: 1rem;">
-                <i class="fas fa-times-circle" style="color: #f87171; margin-top: 0.25rem;"></i>
-                <span>Kerusakan ekosistem laut akibat sampah plastik</span>
-              </li>
-              <li style="display: flex; align-items: flex-start; gap: 1rem;">
-                <i class="fas fa-times-circle" style="color: #f87171; margin-top: 0.25rem;"></i>
-                <span>Penyebaran penyakit dan vektor hama</span>
-              </li>
-            </ul>
-          </div>
-          <div style="text-align: center;">
-            <div style="font-size: 8rem; opacity: 0.3;">
-              <i class="fas fa-globe-asia"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="footer-simple">
-    <div class="container">
-      <p>&copy; 2026 SIPARES. Hak Cipta Dilindungi.</p>
     </div>
   </footer>
 
-  <script src="js/main.js"></script>
+  <!-- Back to Top Button -->
+  <button class="back-to-top" id="backToTop">
+    <i class="fas fa-arrow-up"></i>
+  </button>
+
+  <!-- JavaScript Interaktif (Filter Kategori, Pencarian, & Detail Modal Reader) -->
+  <script>
+    // Database Materi Edukasi Detail
+    const articlesData = {
+      1: {
+        category: 'organik',
+        categoryLabel: 'ORGANIK',
+        badgeClass: 'cat-organik',
+        views: '1.420',
+        date: '12 Okt 2026',
+        title: 'Mengenal Sampah Organik dan Cara Pengolahannya Menjadi Kompos',
+        summary: 'Sampah organik berasal dari bahan hayati yang mudah terurai mikroorganisme. Pengomposan adalah solusi terbaik agar tidak membusuk di TPA.',
+        content: `
+          <p>Sampah organik menyumbang lebih dari 50% total timbulan sampah rumah tangga di perkotaan. Jika dibiarkan menumpuk di TPA tanpa oksigen, sampah organik akan menghasilkan gas metana (CH4) yang mempercepat pemanasan global.</p>
+          
+          <h3>Contoh Sampah Organik</h3>
+          <ul>
+            <li><strong>Sisa Dapur:</strong> Kulit buah, sisa potongan sayuran, ampas kelapa, dan ampas kopi/teh.</li>
+            <li><strong>Sisa Makanan:</strong> Nasi, roti, sisa lauk (tulang ikan/ayam sebaiknya dipisahkan atau dicacah halus).</li>
+            <li><strong>Sampah Kebun:</strong> Daun kering, rumput potongan, dan ranting kecil.</li>
+          </ul>
+
+          <div class="modal-tip-box">
+            <i class="fas fa-lightbulb"></i>
+            <div>
+              <strong>Tips Kompos Takakura &amp; Komposter Drum:</strong>
+              <p style="margin:0.25rem 0 0;font-size:0.9rem;">Campurkan 1 bagian sampah basah (hijau/sayur) dengan 1 bagian sampah kering (daun kering/sekam) agar kelembapan terjaga dan tidak menimbulkan bau menyengat.</p>
+            </div>
+          </div>
+
+          <h3>Langkah Membuat Kompos Sederhana di Rumah:</h3>
+          <ol>
+            <li>Siapkan wadah komposter berlubang sirkulasi udara di bagian bawah dan samping.</li>
+            <li>Buat lapisan dasar menggunakan tanah gembur atau kompos matang setebal 5 cm.</li>
+            <li>Cacah sampah organik dapur menjadi ukuran 2-3 cm untuk mempercepat proses penguraian.</li>
+            <li>Masukkan sampah dan taburi cairan mikroorganisme EM4 atau air gula encer.</li>
+            <li>Aduk seminggu sekali. Dalam 4-6 minggu, kompos hitam remah siap digunakan untuk menyuburkan tanaman.</li>
+          </ol>
+        `
+      },
+      2: {
+        category: 'anorganik',
+        categoryLabel: 'ANORGANIK',
+        badgeClass: 'cat-anorganik',
+        views: '985',
+        date: '18 Okt 2026',
+        title: 'Bahaya Sampah Plastik bagi Lingkungan dan Solusi Daur Ulang',
+        summary: 'Sampah anorganik membutuhkan waktu puluhan hingga ratusan tahun untuk terurai. Pemilahan yang bersih menjadikannya bernilai ekonomi tinggi.',
+        content: `
+          <p>Sampah anorganik adalah material sintetis atau hasil pengolahan mineral tambang yang tidak dapat terurai secara biologis. Contoh terbesarnya adalah kemasan plastik, kaca, logam kaleng, dan botol kaca.</p>
+
+          <h3>Kenali Kode Daur Ulang Plastik Populer</h3>
+          <ul>
+            <li><strong>PET/PETE (Kode 1):</strong> Botol air mineral bening. Sangat mudah didaur ulang menjadi serat pakaian atau dakron.</li>
+            <li><strong>HDPE (Kode 2):</strong> Botol sampo dan botol deterjen tebal. Aman dan bernilai jual tinggi di pengepul.</li>
+            <li><strong>PP (Kode 5):</strong> Wadah makanan dan gelas minuman kemasan. Tahan panas dan dicari pabrik daur ulang.</li>
+          </ul>
+
+          <div class="modal-tip-box">
+            <i class="fas fa-sparkles"></i>
+            <div>
+              <strong>Aturan Emas: Pilah, Bersihkan, Keringkan!</strong>
+              <p style="margin:0.25rem 0 0;font-size:0.9rem;">Pengepul dan Bank Sampah membayar lebih tinggi untuk botol plastik yang sudah dibilas bersih dan dilepas label kemasannya.</p>
+            </div>
+          </div>
+
+          <h3>Langkah yang Bisa Dilakukan Warga:</h3>
+          <ol>
+            <li>Ratakan/remas botol plastik untuk menghemat ruang tempat penyimpanan sementara di rumah.</li>
+            <li>Satukan kardus dan kertas buku dalam ikatan rapi, hindarkan dari cipratan air hujan.</li>
+            <li>Kumpulkan secara berkala setiap 2 minggu dan setorkan ke Bank Sampah RT setempat.</li>
+          </ol>
+        `
+      },
+      3: {
+        category: 'b3',
+        categoryLabel: 'B3 (BERBAHAYA)',
+        badgeClass: 'cat-b3',
+        views: '812',
+        date: '22 Okt 2026',
+        title: 'Panduan Aman Mengelola Sampah B3 (Bahan Berbahaya & Beracun) di Rumah',
+        summary: 'Baterai bekas, aki, obat kedaluwarsa, dan limbah elektronik wajib ditangani terpisah karena racun logam berat yang terkandung di dalamnya.',
+        content: `
+          <p>Sampah Bahan Berbahaya dan Beracun (B3) rumah tangga sering kali dibuang sembarangan ke tempat sampah umum. Padahal saat cairan baterai bocor ke tanah, logam timbal dan merkuri dapat merembes ke air sumur warga sekitar.</p>
+
+          <h3>Contoh Sampah B3 Rumah Tangga:</h3>
+          <ul>
+            <li>Baterai jam, remote, dan baterai lithium smartphone/laptop.</li>
+            <li>Lampu neon CFL dan tabung TL yang mengandung uap raksa.</li>
+            <li>Kaleng bekas semprotan obat nyamuk aerosol, cat semprot, dan tiner.</li>
+            <li>Obat-obatan kedaluwarsa, jarum suntik bekas pakai, dan termometer air raksa.</li>
+          </ul>
+
+          <div class="modal-tip-box" style="background:#fee2e2;border-color:#fca5a5;color:#991b1b;">
+            <i class="fas fa-exclamation-triangle" style="color:#dc2626;"></i>
+            <div>
+              <strong>PERINGATAN KESELAMATAN:</strong>
+              <p style="margin:0.25rem 0 0;font-size:0.9rem;">JANGAN PERNAH membakar sampah B3 atau membuangnya ke saluran selokan got! Asap bakaran baterai/aerosol sangat beracun dan dapat meledak.</p>
+            </div>
+          </div>
+
+          <h3>Penanganan yang Disarankan:</h3>
+          <ol>
+            <li>Beri label "SAMPAH B3" pada kotak penyimpanan tertutup khusus di rumah.</li>
+            <li>Tempelkan selotip bening pada kutub positif dan negatif baterai bekas untuk mencegah korsleting percikan api.</li>
+            <li>Serahkan pada kotak drop box e-waste atau petugas Dinas Lingkungan Hidup yang berkeliling.</li>
+          </ol>
+        `
+      },
+      4: {
+        category: 'residu',
+        categoryLabel: 'RESIDU',
+        badgeClass: 'cat-residu',
+        views: '640',
+        date: '25 Okt 2026',
+        title: 'Mengenal Sampah Residu dan Strategi Mengurangi Beban TPA',
+        summary: 'Sampah residu adalah jenis sampah yang tidak dapat didaur ulang maupun dikomposkan, sehingga menjadi satu-satunya yang harus berakhir di landfill.',
+        content: `
+          <p>Tujuan utama sistem pemilahan sampah modern adalah memastikan bahwa yang diangkut truk ke Tempat Pembuangan Akhir (TPA) hanyalah sampah residu murni. Semakin kecil sampah residu rumah Anda, semakin panjang umur TPA kota kita.</p>
+
+          <h3>Apa Saja yang Masuk Sampah Residu?</h3>
+          <ul>
+            <li>Popok sekali pakai (diapers) dan pembalut wanita.</li>
+            <li>Puntung rokok, kapas bekas pembersih riasan, dan tisu basah sintetis.</li>
+            <li>Kemasan plastik sachet multilayer (kombinasi plastik + lapisan aluminium foil).</li>
+            <li>Pecahan keramik lantai, piring beling pecah, dan styrofoam kotor minyak.</li>
+          </ul>
+
+          <h3>Tips Mengurangi Sampah Residu:</h3>
+          <ol>
+            <li>Gunakan popok kain cuci ulang (clodi) untuk buah hati Anda.</li>
+            <li>Belanja bahan pokok dalam kemasan ukuran besar (bulk) dibanding kemasan sachet kecil.</li>
+            <li>Bawa tempat makan (food container) sendiri saat membeli jajanan makanan berkuah.</li>
+          </ol>
+        `
+      },
+      5: {
+        category: 'tips',
+        categoryLabel: 'TIPS & BANK SAMPAH',
+        badgeClass: 'cat-tips',
+        views: '1.730',
+        date: '28 Okt 2026',
+        title: 'Cara Mendirikan Bank Sampah di Tingkat RT dan Menghasilkan Cuan',
+        summary: 'Inisiatif Bank Sampah terbukti mampu menurunkan timbulan sampah lingkungan hingga 40% sekaligus menambah kas warga.',
+        content: `
+          <p>Bank Sampah adalah sistem pengelolaan sampah kering kolektif yang menerapkan prinsip perbankan: warga menabung sampah terpilah, ditimbang, dicatat buku rekeningnya, dan dikonversi menjadi saldo rupiah.</p>
+
+          <h3>Kunci Sukses Bank Sampah Lingkungan:</h3>
+          <ul>
+            <li><strong>Sosialisasi Jadwal:</strong> Tetapkan hari penimbangan rutin, misal setiap hari Minggu pagi di balai RT.</li>
+            <li><strong>Kemitraan Pengepul:</strong> Jalin kerja sama dengan pengepul resmi agar harga jual kardus, kaleng, dan tembaga stabil.</li>
+            <li><strong>Buku Tabungan:</strong> Setiap kepala keluarga memiliki buku rekening sampah yang bisa dicairkan menjelang hari raya.</li>
+          </ul>
+
+          <div class="modal-tip-box">
+            <i class="fas fa-coins"></i>
+            <div>
+              <strong>Kombinasi dengan SIPARES:</strong>
+              <p style="margin:0.25rem 0 0;font-size:0.9rem;">Saldo tabungan bank sampah warga bahkan dapat langsung dipotongkan untuk membayar retribusi iuran bulanan sampah SIPARES secara otomatis!</p>
+            </div>
+          </div>
+        `
+      },
+      6: {
+        category: 'tips',
+        categoryLabel: 'TIPS 3R',
+        badgeClass: 'cat-tips',
+        views: '1.250',
+        date: '29 Okt 2026',
+        title: 'Penerapan Prinsip 3R (Reduce, Reuse, Recycle) dalam Kehidupan Sehari-hari',
+        summary: 'Mulai dari langkah termudah di dapur dan meja kerja untuk menciptakan lingkungan hidup yang asri dan berkelanjutan.',
+        content: `
+          <p>Prinsip hirarki 3R adalah urutan prioritas utama dalam gaya hidup ramah lingkungan:</p>
+
+          <h3>1. Reduce (Kurangi dari Sumbernya)</h3>
+          <p>Ini adalah langkah terpenting. Tolak kantong kresek saat berbelanja, bawa tumbler botol minum sendiri, dan cetak dokumen bolak-balik.</p>
+
+          <h3>2. Reuse (Gunakan Berulang Kali)</h3>
+          <p>Manfaatkan toples selai kaca untuk wadah bumbu dapur, gunakan kaleng biskuit untuk wadah perkakas, dan manfaatkan kaos bekas menjadi kain lap.</p>
+
+          <h3>3. Recycle (Daur Ulang)</h3>
+          <p>Pilah sampah anorganik agar dapat dilebur kembali oleh industri manufaktur menjadi produk baru yang berguna.</p>
+        `
+      }
+    };
+
+    // DOM Elements
+    const categoryFilter = document.getElementById('categoryFilter');
+    const searchInput = document.getElementById('searchInput');
+    const articlesGrid = document.getElementById('articlesGrid');
+    const emptyState = document.getElementById('emptyState');
+    const btnResetFilter = document.getElementById('btnResetFilter');
+
+    // Modal Elements
+    const articleModal = document.getElementById('articleModal');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
+    const modalBackBtn = document.getElementById('modalBackBtn');
+    const modalCategoryBadge = document.getElementById('modalCategoryBadge');
+    const modalDate = document.getElementById('modalDate');
+    const modalViews = document.getElementById('modalViews');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSummary = document.getElementById('modalSummary');
+    const modalContent = document.getElementById('modalContent');
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    // Filter Logic
+    function filterArticles() {
+      const cards = articlesGrid.querySelectorAll('.article-card');
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const title = card.querySelector('.article-title').textContent.toLowerCase();
+        const summary = card.querySelector('.article-summary').textContent.toLowerCase();
+
+        const matchesCategory = (currentFilter === 'all') || (category === currentFilter);
+        const matchesSearch = !searchQuery || title.includes(searchQuery) || summary.includes(searchQuery);
+
+        if (matchesCategory && matchesSearch) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      if (visibleCount === 0) {
+        emptyState.style.display = 'block';
+      } else {
+        emptyState.style.display = 'none';
+      }
+    }
+
+    // Event Listener Kategori Filter
+    categoryFilter.addEventListener('click', (e) => {
+      const pill = e.target.closest('.cat-pill');
+      if (!pill) return;
+
+      categoryFilter.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      currentFilter = pill.getAttribute('data-filter');
+      filterArticles();
+    });
+
+    // Event Listener Search
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value.toLowerCase().trim();
+      filterArticles();
+    });
+
+    // Reset Button
+    btnResetFilter.addEventListener('click', () => {
+      currentFilter = 'all';
+      searchQuery = '';
+      searchInput.value = '';
+      categoryFilter.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
+      categoryFilter.querySelector('[data-filter="all"]').classList.add('active');
+      filterArticles();
+    });
+
+    // Buka Modal Detail Artikel
+    function openArticleModal(id) {
+      const data = articlesData[id];
+      if (!data) return;
+
+      modalCategoryBadge.className = 'badge-cat ' + data.badgeClass;
+      modalCategoryBadge.textContent = data.categoryLabel;
+      modalDate.textContent = data.date;
+      modalViews.textContent = data.views;
+      modalTitle.textContent = data.title;
+      modalSummary.textContent = data.summary;
+      modalContent.innerHTML = data.content;
+
+      articleModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Tutup Modal
+    function closeArticleModal() {
+      articleModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Delegate Klik Baca Selengkapnya
+    articlesGrid.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn-read');
+      if (btn) {
+        const id = btn.getAttribute('data-id');
+        openArticleModal(id);
+      }
+    });
+
+    modalCloseBtn.addEventListener('click', closeArticleModal);
+    modalBackBtn.addEventListener('click', closeArticleModal);
+
+    articleModal.addEventListener('click', (e) => {
+      if (e.target === articleModal) {
+        closeArticleModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && articleModal.classList.contains('active')) {
+        closeArticleModal();
+      }
+    });
+
+    // Back to Top Logic
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTop.classList.add('show');
+      } else {
+        backToTop.classList.remove('show');
+      }
+    });
+
+    backToTop.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Mobile Navbar Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+          navLinks.classList.toggle('show');
+        }
+      });
+    }
+  </script>
 </body>
 
 </html>
