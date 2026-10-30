@@ -285,6 +285,4 @@ Proyek ini dibuat untuk keperluan akademis / pembelajaran.
 
 © 2026 SIPARES. Hak Cipta Dilindungi.
 
-#   s i p a r e s s  
- #   s i p a r e s s  
- 
+#
